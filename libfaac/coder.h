@@ -62,42 +62,7 @@ enum WINDOW_TYPE {
     SHORT_LONG_WINDOW
 };
 
-#define TNS_MAX_ORDER 20
-#define DEF_TNS_GAIN_THRESH 1.4
-#define DEF_TNS_COEFF_THRESH 0.1
-#define DEF_TNS_COEFF_RES 4
-#define DEF_TNS_RES_OFFSET 3
-#define LEN_TNS_NFILTL 2
-#define LEN_TNS_NFILTS 1
-
 #define LPC 2
-
-typedef struct {
-    int order;                           /* Filter order */
-    int direction;                       /* Filtering direction */
-    int coefCompress;                    /* Are coeffs compressed? */
-    int length;                          /* Length, in bands */
-    double aCoeffs[TNS_MAX_ORDER+1];     /* AR Coefficients */
-    double kCoeffs[TNS_MAX_ORDER+1];     /* Reflection Coefficients */
-    int index[TNS_MAX_ORDER+1];          /* Coefficient indices */
-} TnsFilterData;
-
-typedef struct {
-    int numFilters;                             /* Number of filters */
-    int coefResolution;                         /* Coefficient resolution */
-    TnsFilterData tnsFilter[1<<LEN_TNS_NFILTL]; /* TNS filters */
-} TnsWindowData;
-
-typedef struct {
-    int tnsDataPresent;
-    int tnsMinBandNumberLong;
-    int tnsMinBandNumberShort;
-    int tnsMaxBandsLong;
-    int tnsMaxBandsShort;
-    int tnsMaxOrderLong;
-    int tnsMaxOrderShort;
-    TnsWindowData windowData[MAX_SHORT_WINDOWS]; /* TNS data per window */
-} TnsInfo;
 
 typedef struct {
     int window_shape;
@@ -134,8 +99,6 @@ typedef struct {
     int iLenLongestCW;
     int iLenReordSpData;
 #endif
-
-    TnsInfo tnsInfo;
 } CoderInfo;
 
 typedef struct {

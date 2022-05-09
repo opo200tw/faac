@@ -921,7 +921,6 @@ int main(int argc, char *argv[])
     myFormat = faacEncGetCurrentConfiguration(hEncoder);
     myFormat->aacObjectType = objectType;
     myFormat->mpegVersion = mpegVersion;
-    myFormat->useTns = useTns;
     switch (shortctl)
     {
     case SHORTCTL_NOSHORT:
@@ -1021,8 +1020,6 @@ int main(int argc, char *argv[])
         break;
     }
     fprintf(stderr, "(MPEG-%d)", (mpegVersion == MPEG4) ? 4 : 2);
-    if (myFormat->useTns)
-        fprintf(stderr, " + TNS");
 
     switch(myFormat->jointmode) {
     case JOINT_MS:

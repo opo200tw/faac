@@ -29,7 +29,6 @@
 #include "bitstream.h"
 #include "filtbank.h"
 #include "util.h"
-#include "tns.h"
 #include "stereo.h"
 
 #if (defined WIN32 || defined _WIN32 || defined WIN64 || defined _WIN64) && !defined(PACKAGE_VERSION)
@@ -118,7 +117,6 @@ int FAACAPI faacEncSetConfiguration(faacEncHandle hpEncoder,
 
     hEncoder->config.jointmode = config->jointmode;
     hEncoder->config.useLfe = config->useLfe;
-    hEncoder->config.useTns = config->useTns;
     hEncoder->config.aacObjectType = config->aacObjectType;
     hEncoder->config.mpegVersion = config->mpegVersion;
     hEncoder->config.outputFormat = config->outputFormat;
@@ -146,9 +144,6 @@ int FAACAPI faacEncSetConfiguration(faacEncHandle hpEncoder,
 #ifdef DRM
     config->pnslevel = 0;
 #endif
-
-    /* Re-init TNS for new profile */
-    TnsInit(hEncoder);
 
     /* Check for correct bitrate */
     if (!hEncoder->sampleRate || !hEncoder->numChannels)
@@ -271,7 +266,6 @@ faacEncHandle FAACAPI faacEncOpen(unsigned long sampleRate,
     hEncoder->config.jointmode = JOINT_IS;
     hEncoder->config.pnslevel = 4;
     hEncoder->config.useLfe = 1;
-    hEncoder->config.useTns = 0;
     hEncoder->config.bitRate = 64000;
     hEncoder->config.bandWidth = g_bw.fac * hEncoder->sampleRate;
     hEncoder->config.quantqual = 0;
@@ -315,9 +309,7 @@ faacEncHandle FAACAPI faacEncOpen(unsigned long sampleRate,
         hEncoder->srInfo->num_cb_short);
 
     FilterBankInit(hEncoder);
-
-    TnsInit(hEncoder);
-
+    
     /* Return handle */
     return hEncoder;
 }
@@ -374,7 +366,6 @@ int FAACAPI faacEncEncode(faacEncHandle hpEncoder,
     CoderInfo *coderInfo = hEncoder->coderInfo;
     unsigned int numChannels = hEncoder->numChannels;
     unsigned int useLfe = hEncoder->config.useLfe;
-    unsigned int useTns = hEncoder->config.useTns;
     unsigned int jointmode = hEncoder->config.jointmode;
     unsigned int bandWidth = hEncoder->config.bandWidth;
     unsigned int shortctl = hEncoder->config.shortctl;
@@ -546,21 +537,6 @@ int FAACAPI faacEncEncode(faacEncHandle hpEncoder,
             coderInfo[channel].sfb_offset[sb] = offset;
         }
     }
-
-    /* Perform TNS analysis and filtering */
-    for (channel = 0; channel < numChannels; channel++) {
-        if ((!channelInfo[channel].lfe) && (useTns)) {
-            TnsEncode(&(coderInfo[channel].tnsInfo),
-                      coderInfo[channel].sfbn,
-                      coderInfo[channel].sfbn,
-                      coderInfo[channel].block_type,
-                      coderInfo[channel].sfb_offset,
-                      hEncoder->freqBuff[channel]);
-        } else {
-            coderInfo[channel].tnsInfo.tnsDataPresent = 0;      /* TNS not used for LFE */
-        }
-    }
-
     for (channel = 0; channel < numChannels; channel++) {
       // reduce LFE bandwidth
 		if (!channelInfo[channel].cpe && channelInfo[channel].lfe)
