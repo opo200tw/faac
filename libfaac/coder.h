@@ -32,7 +32,7 @@ extern "C" {
 /* Allow encoding of Digital Radio Mondiale (DRM) with transform length 1024 */
 //#define DRM_1024
 
-#define MAX_CHANNELS 64
+#define MAX_CHANNELS 1
 
 #ifdef DRM
 #ifdef DRM_1024
@@ -99,18 +99,6 @@ typedef struct {
     TnsWindowData windowData[MAX_SHORT_WINDOWS]; /* TNS data per window */
 } TnsInfo;
 
-typedef struct
-{
-    int psy_init_mc;
-    double dr_mc[LPC][BLOCK_LEN_LONG],e_mc[LPC+1+1][BLOCK_LEN_LONG];
-    double K_mc[LPC+1][BLOCK_LEN_LONG], R_mc[LPC+1][BLOCK_LEN_LONG];
-    double VAR_mc[LPC+1][BLOCK_LEN_LONG], KOR_mc[LPC+1][BLOCK_LEN_LONG];
-    double sb_samples_pred_mc[BLOCK_LEN_LONG];
-    int thisLineNeedsResetting_mc[BLOCK_LEN_LONG];
-    int reset_count_mc;
-} BwpInfo;
-
-
 typedef struct {
     int window_shape;
     int prev_window_shape;
@@ -148,7 +136,6 @@ typedef struct {
 #endif
 
     TnsInfo tnsInfo;
-    BwpInfo bwpInfo;
 } CoderInfo;
 
 typedef struct {
