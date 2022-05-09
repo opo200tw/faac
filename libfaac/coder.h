@@ -86,8 +86,8 @@ typedef struct {
 #define DATASIZE (3*FRAME_LEN/2)
 
     struct {
-        int data;
-        int len;
+        short data;
+        short len;
     } s[DATASIZE];
     int datacnt;
 
