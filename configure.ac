@@ -59,7 +59,6 @@ AC_CHECK_TYPES([in_port_t, socklen_t], , ,
 AC_CHECK_MEMBERS(fpos_t.__pos,,, [#include <stdio.h>])
 
 AC_OUTPUT([
-common/Makefile
 libfaac/Makefile
 libfaac/faac.pc
 frontend/Makefile
