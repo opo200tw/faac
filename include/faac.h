@@ -50,7 +50,7 @@ psymodellist_t;
 #include "faaccfg.h"
 
 
-typedef void *faacEncHandle;
+typedef struct faacEnc *faacEncHandle;
 
 /*
 	Allows an application to get FAAC version info. This is intended
