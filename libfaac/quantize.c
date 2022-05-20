@@ -24,7 +24,9 @@
 #include "huff2.h"
 
 #ifdef HAVE_IMMINTRIN_H
-# include <immintrin.h>
+    #ifndef __CS_COMPILER__ 
+        #include <immintrin.h>
+    #endif
 #endif
 
 #ifdef __SSE2__

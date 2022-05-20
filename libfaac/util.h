@@ -27,7 +27,9 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include <stdlib.h>
+#ifndef __CS_COMPILER__
 #include <memory.h>
+#endif
 
 #ifndef max
 #define max(a, b) (((a) > (b)) ? (a) : (b))
