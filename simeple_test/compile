@@ -1,0 +1,5 @@
+#! /bin/sh
+rm ./out.aac
+rm ./pcm2aac
+gcc pcm2aac.c -o pcm2aac -L/usr/local/lib -lfaac -I/usr/local/include
+./pcm2aac
