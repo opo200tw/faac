@@ -31,10 +31,8 @@ void faacSetting(struct AAC_T *aac, int step)
     {
         aac->nPCMBitSize = 16;
         aac->pConfiguration->inputFormat = FAAC_INPUT_16BIT;
-        aac->pConfiguration->quantqual = 200;
-        aac->pConfiguration->mpegVersion = 1;
-        // aac->pConfiguration->useTns = 1;
-        aac->pConfiguration->useLfe = 1;
+        aac->pConfiguration->mpegVersion = MPEG4;
+        aac->pConfiguration->useLfe = 0;
 
         aac->nPCMBufferSize = aac->nInputSamples * aac->nPCMBitSize / 8;
         aac->pbPCMBuffer = (unsigned char*) malloc(aac->nPCMBufferSize);
@@ -53,11 +51,24 @@ void faacPrintConfig(struct AAC_T *aac)
     // setting
     printf("==========faacEncConfigurationPtr============\n"
         "aacObjectType: %d\n"
+/* AAC object types */
+// #define MAIN 1
+// #define LOW  2
+// #define SSR  3
+// #define LTP  4
         "mpegVersion: %d\n"
+/* MPEG ID's */ 
+// #define MPEG2 1  
+// #define MPEG4 0
         "shortctl: %d\n"
+// #define SHORTCTL_NORMAL    0
+// #define SHORTCTL_NOSHORT   1
+// #define SHORTCTL_NOLONG    2
         // "useTns: %d\n"
         "useLfe: %d\n"
         "jointmode: %d\n"
+// enum {JOINT_NONE = 0, JOINT_MS, JOINT_IS}; 
+// https://github.com/knik0/faac/issues/11
         "pnslevel: %d\n"
         "bitRate: %lu\n"
         "quantqual: %lu\n"
